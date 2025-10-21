@@ -17,7 +17,8 @@ class HomeScreen extends StatefulWidget {
 // Esta es la clase que maneja el estado del HomeScreen
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0; // Índice de la pantalla actualmente seleccionada
-  late PageController _pageController; // Controlador para navegar entre páginas (PageView)
+  late PageController
+  _pageController; // Controlador para navegar entre páginas (PageView)
 
   // Lista de las pantallas que se muestran en el PageView
   final List<Widget> _pantallas = const [
@@ -62,14 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        // Cambia el título según la pantalla actual
-        title: Text([
-          'ComprAqui!',
-          'ComprAqui!',
-          'ComprAqui!',
-          'ComprAqui!',
-          'ComprAqui!',
-        ][_selectedIndex]),
+        // Titulo fijo para todoas las pestañas
+        title: Text('ComprAqui!'),
         backgroundColor: theme.primaryColor, // Color principal global
       ),
       body: PageView.builder(
@@ -90,7 +85,9 @@ class _HomeScreenState extends State<HomeScreen> {
               double value = 1.0;
               if (_pageController.position.haveDimensions) {
                 // Calcula la diferencia de página actual vs índice
-                value = ((_pageController.page ?? _selectedIndex.toDouble()) - index.toDouble());
+                value =
+                    ((_pageController.page ?? _selectedIndex.toDouble()) -
+                    index.toDouble());
                 // Limita el valor de escala para el efecto
                 value = (1 - (value.abs() * 0.3)).clamp(0.8, 1.0);
               }
@@ -98,7 +95,10 @@ class _HomeScreenState extends State<HomeScreen> {
               return Opacity(
                 opacity: value, // Ajusta la opacidad según la escala
                 child: Transform.translate(
-                  offset: Offset(50 * (1 - value), 0), // Efecto de deslizamiento
+                  offset: Offset(
+                    50 * (1 - value),
+                    0,
+                  ), // Efecto de deslizamiento
                   child: child,
                 ),
               );
@@ -112,10 +112,14 @@ class _HomeScreenState extends State<HomeScreen> {
         type: BottomNavigationBarType.fixed, // Muestra todos los ítems fijos
         onTap: _onItemTapped, // Llama a la función cuando se toca un ítem
         selectedItemColor: theme.primaryColor, // Color de ítem seleccionado
-        unselectedItemColor: Colors.grey, // Color de ítem no seleccionado
+        unselectedItemColor:
+            theme.textColorSecon, // Color de ítem no seleccionado
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: 'Mis Compras'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_bag),
+            label: 'Mis Compras',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Catálogo'),
           BottomNavigationBarItem(icon: Icon(Icons.shop), label: 'Mi Pedido'),
           BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'Otros'),

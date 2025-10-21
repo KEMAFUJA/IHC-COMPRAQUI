@@ -23,9 +23,9 @@ void main() {
         ChangeNotifierProvider(create: (_) => Productos()),
         ChangeNotifierProvider(create: (_) => Resenas()),
         ChangeNotifierProvider(create: (_) => Carrito()),
-        ChangeNotifierProvider(create: (_) => Tema()),       
-        ChangeNotifierProvider(create: (_) => AppTheme()),   
-        ChangeNotifierProvider(create: (_) => Pedidos()),    
+        ChangeNotifierProvider(create: (_) => Tema()),
+        ChangeNotifierProvider(create: (_) => AppTheme()),
+        ChangeNotifierProvider(create: (_) => Pedidos()),
       ],
       child: const MyApp(),
     ),
@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: Colors.grey[900],
           selectedItemColor: appTheme.primaryColor,
-          unselectedItemColor: Colors.grey,
+          unselectedItemColor: appTheme.textColorSecon,
         ),
         textTheme: Theme.of(context).textTheme.copyWith(
           headlineMedium: const TextStyle(
@@ -98,10 +98,7 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: Colors.blueGrey,
           ),
-          bodyMedium: const TextStyle(
-            fontSize: 15,
-            color: Colors.blueGrey,
-          ),
+          bodyMedium: const TextStyle(fontSize: 15, color: Colors.blueGrey),
         ),
       ),
       themeMode: tema.themeMode,

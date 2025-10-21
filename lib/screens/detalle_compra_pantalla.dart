@@ -21,8 +21,10 @@ class DetalleCompraPantalla extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detalle de Compra',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        title: const Text(
+          'Detalle de Compra',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
         backgroundColor: themeProvider.primaryColor,
       ),
       body: Padding(
@@ -31,11 +33,21 @@ class DetalleCompraPantalla extends StatelessWidget {
           children: [
             _buildHeader(themeProvider, productosProvider),
             const SizedBox(height: 16),
-            Expanded(child: _buildListaProductos(themeProvider, productosProvider, context)),
+            Expanded(
+              child: _buildListaProductos(
+                themeProvider,
+                productosProvider,
+                context,
+              ),
+            ),
             const SizedBox(height: 16),
             _buildAgregarProducto(themeProvider, productosProvider, context),
             const SizedBox(height: 20),
-            _buildTotalYRepetirCompra(themeProvider, productosProvider, context),
+            _buildTotalYRepetirCompra(
+              themeProvider,
+              productosProvider,
+              context,
+            ),
           ],
         ),
       ),
@@ -56,8 +68,14 @@ class DetalleCompraPantalla extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Productos en la compra',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.grey[700])),
+                  Text(
+                    'Productos en la compra',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey[700],
+                    ),
+                  ),
                   Text(
                     'Total: ${productosProvider.productos.length} producto${productosProvider.productos.length != 1 ? 's' : ''}',
                     style: const TextStyle(fontSize: 14, color: Colors.grey),
@@ -72,17 +90,31 @@ class DetalleCompraPantalla extends StatelessWidget {
   }
 
   // 🔹 Lista de productos
-  Widget _buildListaProductos(AppTheme theme, Productos productosProvider, BuildContext context) {
+  Widget _buildListaProductos(
+    AppTheme theme,
+    Productos productosProvider,
+    BuildContext context,
+  ) {
     if (productosProvider.productos.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.shopping_cart_outlined, size: 64, color: Colors.grey[400]),
+            Icon(
+              Icons.shopping_cart_outlined,
+              size: 64,
+              color: Colors.grey[400],
+            ),
             const SizedBox(height: 16),
-            Text('No hay productos', style: TextStyle(fontSize: 18, color: Colors.grey[600])),
+            Text(
+              'No hay productos',
+              style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+            ),
             const SizedBox(height: 8),
-            Text('Agrega productos a tu compra', style: TextStyle(fontSize: 14, color: Colors.grey[500])),
+            Text(
+              'Agrega productos a tu compra',
+              style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+            ),
           ],
         ),
       );
@@ -129,18 +161,32 @@ class DetalleCompraPantalla extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(p['nombre'],
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis),
+          Text(
+            p['nombre'],
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
           const SizedBox(height: 4),
-          Text('${p['precio']}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: theme.primaryColor)),
+          Text(
+            '${p['precio']}',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: theme.primaryColor,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildControlesCantidad(int index, Map<String, dynamic> p, AppTheme theme, Productos productosProvider) {
+  Widget _buildControlesCantidad(
+    int index,
+    Map<String, dynamic> p,
+    AppTheme theme,
+    Productos productosProvider,
+  ) {
     return Column(
       children: [
         _buildCantidadControl(index, p, theme, productosProvider),
@@ -150,7 +196,12 @@ class DetalleCompraPantalla extends StatelessWidget {
     );
   }
 
-  Widget _buildCantidadControl(int index, Map<String, dynamic> p, AppTheme theme, Productos productosProvider) {
+  Widget _buildCantidadControl(
+    int index,
+    Map<String, dynamic> p,
+    AppTheme theme,
+    Productos productosProvider,
+  ) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey[100],
@@ -160,18 +211,35 @@ class DetalleCompraPantalla extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildCantidadBoton(Icons.remove, () => productosProvider.disminuirCantidad(index), left: true),
+          _buildCantidadBoton(
+            Icons.remove,
+            () => productosProvider.disminuirCantidad(index),
+            left: true,
+          ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            child: Text('${p['cantidad']}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+            child: Text(
+              '${p['cantidad']}',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
           ),
-          _buildCantidadBoton(Icons.add, () => productosProvider.aumentarCantidad(index), color: theme.primaryColor, left: false),
+          _buildCantidadBoton(
+            Icons.add,
+            () => productosProvider.aumentarCantidad(index),
+            color: theme.primaryColor,
+            left: false,
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildCantidadBoton(IconData icon, VoidCallback onTap, {Color? color, bool left = false}) {
+  Widget _buildCantidadBoton(
+    IconData icon,
+    VoidCallback onTap, {
+    Color? color,
+    bool left = false,
+  }) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -182,7 +250,10 @@ class DetalleCompraPantalla extends StatelessWidget {
           bottomRight: !left ? const Radius.circular(20) : Radius.zero,
         ),
         onTap: onTap,
-        child: Container(padding: const EdgeInsets.all(8), child: Icon(icon, size: 18, color: color ?? Colors.grey[700])),
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: Icon(icon, size: 18, color: color ?? Colors.grey[700]),
+        ),
       ),
     );
   }
@@ -198,23 +269,36 @@ class DetalleCompraPantalla extends StatelessWidget {
           foregroundColor: Colors.red,
           side: const BorderSide(color: Colors.red),
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildAgregarProducto(AppTheme theme, Productos productosProvider, BuildContext context) {
+  Widget _buildAgregarProducto(
+    AppTheme theme,
+    Productos productosProvider,
+    BuildContext context,
+  ) {
     return Container(
       width: double.infinity,
       height: 50,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            colors: [theme.primaryColor, theme.primaryColor.withOpacity(0.8)],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight),
+          colors: [theme.primaryColor, theme.primaryColor.withOpacity(0.8)],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: theme.primaryColor.withOpacity(0.3), blurRadius: 8, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+            color: theme.primaryColor.withOpacity(0.3),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Material(
         color: Colors.transparent,
@@ -251,7 +335,10 @@ class DetalleCompraPantalla extends StatelessWidget {
                     ),
                   ),
                   actions: [
-                    TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancelar')),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Cancelar'),
+                    ),
                   ],
                 );
               },
@@ -261,7 +348,7 @@ class DetalleCompraPantalla extends StatelessWidget {
               productosProvider.agregarProducto({
                 'nombre': productoSeleccionado['nombre'],
                 'cantidad': 1,
-                'precio': productoSeleccionado['precio']
+                'precio': productoSeleccionado['precio'],
               });
             }
           },
@@ -270,7 +357,14 @@ class DetalleCompraPantalla extends StatelessWidget {
             children: const [
               Icon(Icons.add, color: Colors.white),
               SizedBox(width: 8),
-              Text('Agregar Producto', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
+              Text(
+                'Agregar Producto',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ],
           ),
         ),
@@ -278,17 +372,34 @@ class DetalleCompraPantalla extends StatelessWidget {
     );
   }
 
-  Widget _buildTotalYRepetirCompra(AppTheme theme, Productos productosProvider, BuildContext context) {
+  Widget _buildTotalYRepetirCompra(
+    AppTheme theme,
+    Productos productosProvider,
+    BuildContext context,
+  ) {
     return Card(
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Text('Total:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-              Text('Bs ${productosProvider.calcularTotal()}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: theme.primaryColor)),
-            ]),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Total:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  'Bs ${productosProvider.calcularTotal()}',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: theme.primaryColor,
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
@@ -296,13 +407,22 @@ class DetalleCompraPantalla extends StatelessWidget {
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 icon: const Icon(Icons.repeat),
-                label: const Text('Repetir Compra', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                label: const Text(
+                  'Repetir Compra',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
                 onPressed: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => UbicacionEnvioPantalla(total: productosProvider.calcularTotal())),
+                  MaterialPageRoute(
+                    builder: (_) => UbicacionEnvioPantalla(
+                      total: productosProvider.calcularTotal(),
+                    ),
+                  ),
                 ),
               ),
             ),
