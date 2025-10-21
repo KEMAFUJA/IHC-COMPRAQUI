@@ -25,25 +25,25 @@ class CarritoPantalla extends StatelessWidget {
         'nombre': 'Pan integral 500g',
         'precio': 'Bs 6',
         'imagen':
-            'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200'
+            'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200',
       },
       {
         'nombre': 'Leche descremada 1L',
         'precio': 'Bs 8',
         'imagen':
-            'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=200'
+            'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=200',
       },
       {
         'nombre': 'Huevos 6u',
         'precio': 'Bs 12',
         'imagen':
-            'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200'
+            'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200',
       },
       {
         'nombre': 'Aceite de oliva 500ml',
         'precio': 'Bs 20',
         'imagen':
-            'https://images.unsplash.com/photo-1573383678063-32d3aad7e8c8?w=200'
+            'https://images.unsplash.com/photo-1573383678063-32d3aad7e8c8?w=200',
       },
     ];
 
@@ -69,8 +69,10 @@ class CarritoPantalla extends StatelessWidget {
                 final cantidad = carrito.cantidad(producto['nombre']);
 
                 return Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -99,13 +101,19 @@ class CarritoPantalla extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(producto['nombre'],
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: themeProvider.primaryColor)),
-                            Text(producto['precio'],
-                                style:
-                                    TextStyle(color: themeProvider.primaryColor)),
+                            Text(
+                              producto['nombre'],
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: themeProvider.primaryColor,
+                              ),
+                            ),
+                            Text(
+                              producto['precio'],
+                              style: TextStyle(
+                                color: themeProvider.primaryColor,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -117,10 +125,13 @@ class CarritoPantalla extends StatelessWidget {
                             onPressed: () =>
                                 carrito.quitarProducto(producto['nombre']),
                           ),
-                          Text('$cantidad',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: themeProvider.primaryColor)),
+                          Text(
+                            '$cantidad',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: themeProvider.primaryColor,
+                            ),
+                          ),
                           // 🔹 Agregar producto al carrito
                           IconButton(
                             icon: const Icon(Icons.add, size: 20),
@@ -183,9 +194,10 @@ class CarritoPantalla extends StatelessWidget {
                               Text(
                                 sugerencia['nombre']!,
                                 style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600,
-                                    color: themeProvider.primaryColor),
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: themeProvider.primaryColor,
+                                ),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -193,9 +205,10 @@ class CarritoPantalla extends StatelessWidget {
                               Text(
                                 sugerencia['precio']!,
                                 style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    color: themeProvider.primaryColor),
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: themeProvider.primaryColor,
+                                ),
                               ),
                               const SizedBox(height: 4),
                               SizedBox(
@@ -205,15 +218,19 @@ class CarritoPantalla extends StatelessWidget {
                                     padding: EdgeInsets.zero,
                                     backgroundColor: themeProvider.primaryColor,
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(6)),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
                                   ),
                                   onPressed: () => carrito.agregarProducto({
                                     'nombre': sugerencia['nombre']!,
                                     'precio': sugerencia['precio']!,
                                     'imagen': sugerencia['imagen']!,
                                   }),
-                                  child: const Icon(Icons.add,
-                                      size: 16, color: Colors.white),
+                                  child: const Icon(
+                                    Icons.add,
+                                    size: 16,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ],
@@ -230,40 +247,48 @@ class CarritoPantalla extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Total:',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: themeProvider.primaryColor)),
-                Text('Bs ${total.toStringAsFixed(2)}',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: themeProvider.primaryColor)),
+                Text(
+                  'Total:',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: themeProvider.primaryColor,
+                  ),
+                ),
+                Text(
+                  'Bs ${total.toStringAsFixed(2)}',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: themeProvider.primaryColor,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 12),
             // 🔹 Botón PEDIR
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: themeProvider.primaryColor,
+                backgroundColor: themeProvider.accentColor,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        UbicacionEnvioPantalla(total: total),
+                    builder: (context) => UbicacionEnvioPantalla(total: total),
                   ),
                 );
               },
-              child: const Text(
+              child: Text(
                 'PEDIR',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: themeProvider.secundaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],

@@ -29,7 +29,6 @@ class Resenas with ChangeNotifier {
       totalEstrellas += r['estrellas'] ?? 0;
     }
     return totalEstrellas / _resenas.length;
-    return totalEstrellas / _resenas.length;
   }
 
   // Obtener número total de reseñas

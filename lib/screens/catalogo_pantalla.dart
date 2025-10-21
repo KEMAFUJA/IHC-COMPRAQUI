@@ -201,7 +201,7 @@ class _CatalogopantallaState extends State<Catalogopantalla> {
                           categoriaSeleccionada = cat;
                         });
                       },
-                      selectedColor: themeProvider.primaryColor,
+                      selectedColor: themeProvider.secundaryColor,
                       backgroundColor: themeProvider.backgroundColor
                           .withOpacity(0.2),
                       labelStyle: TextStyle(

@@ -406,15 +406,20 @@ class DetalleCompraPantalla extends StatelessWidget {
               height: 50,
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
+                  backgroundColor: AppTheme().accentColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
                 icon: const Icon(Icons.repeat),
-                label: const Text(
+                label: Text(
                   'Repetir Compra',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+
+                  style: TextStyle(
+                    color: theme.secundaryColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 onPressed: () => Navigator.push(
                   context,

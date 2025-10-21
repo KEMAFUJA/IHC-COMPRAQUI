@@ -7,7 +7,11 @@ class TrackingPedidoPantalla extends StatefulWidget {
   final double totalPedido;
   final double costoEnvio;
 
-  const TrackingPedidoPantalla({super.key, required this.totalPedido, required this.costoEnvio});
+  const TrackingPedidoPantalla({
+    super.key,
+    required this.totalPedido,
+    required this.costoEnvio,
+  });
 
   @override
   State<TrackingPedidoPantalla> createState() => _TrackingPedidoPantallaState();
@@ -22,7 +26,7 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
     'Haciendo el pedido',
     'Recibiendo pedido',
     'De ida a destino',
-    'Destino'
+    'Destino',
   ];
 
   Map<String, String> repartidor = {
@@ -31,7 +35,7 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
     "modelo": "Boxer 150",
     "placa": "1234-XYZ",
     "celular": "+591 77777777",
-    "foto": "https://cdn-icons-png.flaticon.com/512/147/147144.png"
+    "foto": "https://cdn-icons-png.flaticon.com/512/147/147144.png",
   };
 
   late AppTheme appTheme; // ⚠️ Instancia de AppTheme
@@ -78,8 +82,8 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
               ),
             )
           : entregado
-              ? _pedidoEntregado()
-              : _pedidoEnCamino(),
+          ? _pedidoEntregado()
+          : _pedidoEnCamino(),
     );
   }
 
@@ -97,7 +101,7 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
                 style: TextStyle(
                   fontSize: 16,
                   fontStyle: FontStyle.italic,
-                  color: Colors.black54
+                  color: Colors.black54,
                 ),
               ),
             ),
@@ -116,7 +120,9 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
                       height: 6,
                       margin: const EdgeInsets.symmetric(horizontal: 2),
                       decoration: BoxDecoration(
-                        color: completado ? Colors.green : Colors.red.withOpacity(0.4),
+                        color: completado
+                            ? Colors.green
+                            : Colors.red.withOpacity(0.4),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
@@ -154,13 +160,19 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(repartidor['nombre']!, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text(
+                          repartidor['nombre']!,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         Text('${repartidor['marca']} ${repartidor['modelo']}'),
                         Text('Placa: ${repartidor['placa']}'),
                         Text('Celular: ${repartidor['celular']}'),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
@@ -169,7 +181,7 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: appTheme.primaryColor
+                  color: appTheme.primaryColor,
                 ),
               ),
             ],
@@ -192,8 +204,12 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
             const SizedBox(height: 16),
             const Text(
               '¡Su pedido llegó!',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green),
-              textAlign: TextAlign.center
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.green,
+              ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
             CircleAvatar(
@@ -201,7 +217,10 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
               radius: 40,
             ),
             const SizedBox(height: 16),
-            Text(repartidor['nombre']!, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(
+              repartidor['nombre']!,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             Text('${repartidor['marca']} ${repartidor['modelo']}'),
             Text('Placa: ${repartidor['placa']}'),
             Text('Celular: ${repartidor['celular']}'),
@@ -209,7 +228,11 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
             Text(
               '💰 Total: Bs ${total.toStringAsFixed(2)} (Pedido: Bs ${widget.totalPedido.toStringAsFixed(2)} + Envío: Bs ${widget.costoEnvio.toStringAsFixed(2)})',
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87),
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
             ),
             const SizedBox(height: 32),
             ElevatedButton(
@@ -220,11 +243,19 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: appTheme.primaryColor,
+                backgroundColor: appTheme.accentColor,
                 minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
-              child: const Text('¡Recoger!', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              child: Text(
+                '¡Recoger!',
+                style: TextStyle(
+                  color: appTheme.secundaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),
