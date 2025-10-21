@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'tema.dart'; // Usar tu clase Tema que ya tiene ThemeMode
+import '../paleta.dart';
 
 class CambiarTemaPantalla extends StatelessWidget {
   const CambiarTemaPantalla({super.key});
@@ -8,11 +9,12 @@ class CambiarTemaPantalla extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tema = Provider.of<Tema>(context); // Aquí usas Tema con ThemeMode
+    final themeProvider = Provider.of<AppTheme>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cambiar Color / Tema'),
-        backgroundColor: Colors.blue,
+        backgroundColor: themeProvider.primaryColor,
       ),
       body: Column(
         children: [

@@ -60,14 +60,16 @@ class Perfilpantalla extends StatelessWidget {
                         radius: 50,
                         backgroundColor: Colors.grey[200],
                         backgroundImage: const NetworkImage(
-                            'https://i.pravatar.cc/150?img=3'),
+                          'https://i.pravatar.cc/150?img=3',
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
                     // 🔔 Nombre dinámico
                     Text(
                       user.nombre,
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
                           ),
@@ -77,8 +79,8 @@ class Perfilpantalla extends StatelessWidget {
                     Text(
                       user.correo,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.white.withOpacity(0.9),
-                          ),
+                        color: Colors.white.withOpacity(0.9),
+                      ),
                     ),
                   ],
                 ),
@@ -92,8 +94,10 @@ class Perfilpantalla extends StatelessWidget {
             // ------------------------
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
+
               child: Card(
                 elevation: 2,
+                color: appTheme.backgroundColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),

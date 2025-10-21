@@ -207,7 +207,7 @@ class _CatalogopantallaState extends State<Catalogopantalla> {
                       labelStyle: TextStyle(
                         color: seleccionada
                             ? Colors.white
-                            : themeProvider.textColor,
+                            : themeProvider.textColorSecon,
                         fontWeight: FontWeight.w600,
                       ),
                       shape: RoundedRectangleBorder(

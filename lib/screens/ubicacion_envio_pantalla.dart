@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../paleta.dart';
 import '../providers/productos.dart';
-import 'viaje_pedido_pantalla.dart'; 
+import 'viaje_pedido_pantalla.dart';
 
 class UbicacionEnvioPantalla extends StatefulWidget {
   final double total;
@@ -15,7 +15,7 @@ class UbicacionEnvioPantalla extends StatefulWidget {
 
 class _UbicacionEnvioPantallaState extends State<UbicacionEnvioPantalla> {
   final TextEditingController _direccionController = TextEditingController();
-
+  final appTheme = AppTheme();
   // 🔹 Función para confirmar el pedido
   // Valida que se haya ingresado una dirección y luego navega a la pantalla de tracking
   void _confirmarPedido(Productos productosProvider) {
@@ -48,7 +48,7 @@ class _UbicacionEnvioPantallaState extends State<UbicacionEnvioPantalla> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Ubicación de envío', 
+          'Ubicación de envío',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: appTheme.primaryColor,
@@ -69,6 +69,7 @@ class _UbicacionEnvioPantallaState extends State<UbicacionEnvioPantalla> {
             TextField(
               controller: _direccionController,
               maxLines: 3,
+              style: const TextStyle(color: Colors.grey),
               decoration: InputDecoration(
                 hintText: 'Ej. Calle 10 #123, Zona Central',
                 border: OutlineInputBorder(
