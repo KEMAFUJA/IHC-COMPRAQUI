@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/animacion_card.dart';
 import '../widgets/card_item.dart';
 import '../paleta.dart';
+import '../providers/compras.dart';
 import 'detalle_compra_pantalla.dart';
 
 class MisCompraspantalla extends StatelessWidget {
@@ -9,30 +11,10 @@ class MisCompraspantalla extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Lista de compras de ejemplo
-    final compras = [
-      {
-        'producto': 'Arroz 1kg',
-        'fecha': '05/10/2025', 
-        'total': 'Bs 15',
-        'estado': 'Entregado',
-        'color': Colors.green
-      },
-      {
-        'producto': 'Leche 1L',
-        'fecha': '04/10/2025',
-        'total': 'Bs 8',
-        'estado': 'Entregado',
-        'color': Colors.green
-      },
-      {
-        'producto': 'Pan integral',
-        'fecha': '03/10/2025',
-        'total': 'Bs 5',
-        'estado': 'En proceso',
-        'color': Colors.orange
-      },
-    ];
+    final appTheme = AppTheme();
+
+    // 🔹 Obtiene la lista de compras desde el Provider
+    final compras = context.watch<Compras>().compras;
 
     return Scaffold(
       backgroundColor: Colors.grey[50],
@@ -40,7 +22,7 @@ class MisCompraspantalla extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
+            // 🔹 Header con gradiente
             Container(
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
@@ -49,8 +31,8 @@ class MisCompraspantalla extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    AppTheme.primaryColor.withOpacity(0.9),
-                    AppTheme.primaryColor,
+                    appTheme.primaryColor.withOpacity(0.9),
+                    appTheme.primaryColor,
                   ],
                 ),
                 borderRadius: const BorderRadius.only(
@@ -81,7 +63,7 @@ class MisCompraspantalla extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Contador de compras
+            // 🔹 Contador de compras
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Container(
@@ -100,9 +82,9 @@ class MisCompraspantalla extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildStatItem('Total Compras', '${compras.length}', Icons.shopping_cart),
-                    _buildStatItem('Este Mes', '3', Icons.calendar_today),
-                    _buildStatItem('Gastado', 'Bs 28', Icons.attach_money),
+                    _buildStatItem('Total Compras', '${compras.length}', Icons.shopping_cart, appTheme),
+                    _buildStatItem('Este Mes', '3', Icons.calendar_today, appTheme),
+                    _buildStatItem('Gastado', _calcularTotal(compras), Icons.attach_money, appTheme),
                   ],
                 ),
               ),
@@ -110,7 +92,7 @@ class MisCompraspantalla extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Lista de compras
+            // 🔹 Lista de compras
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -132,18 +114,21 @@ class MisCompraspantalla extends StatelessWidget {
                     return AnimacionCard(
                       index: index,
                       child: CardItem(
-                        icon: Icons.shopping_bag,
-                        title: compra['producto'] as String,
-                        subtitle: 'Fecha: ${compra['fecha']} - Total: ${compra['total']} - Estado: ${compra['estado']}' as String,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetalleCompraPantalla(compra: compra),
-                            ),
-                          );
-                        },
-                      ),
+  icon: Icons.shopping_bag,
+  title: compra['producto'] as String,
+  subtitle: 'Fecha: ${compra['fecha']} - Total: ${compra['total']} - Estado: ${compra['estado']}',
+  titleStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),  // 🔹 más pequeño
+  subtitleStyle: const TextStyle(fontSize: 12),
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetalleCompraPantalla(compra: compra),
+      ),
+    );
+  },
+),
+
                     );
                   }),
                 ],
@@ -157,16 +142,17 @@ class MisCompraspantalla extends StatelessWidget {
     );
   }
 
-  Widget _buildStatItem(String title, String value, IconData icon) {
+  // 🔹 Widget para mostrar estadísticas
+  Widget _buildStatItem(String title, String value, IconData icon, AppTheme appTheme) {
     return Column(
       children: [
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppTheme.primaryColor.withOpacity(0.1),
+            color: appTheme.primaryColor.withOpacity(0.1),
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, color: AppTheme.primaryColor, size: 20),
+          child: Icon(icon, color: appTheme.primaryColor, size: 20),
         ),
         const SizedBox(height: 8),
         Text(
@@ -186,5 +172,16 @@ class MisCompraspantalla extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  // 🔹 Función para calcular el total gastado
+  String _calcularTotal(List<Map<String, dynamic>> compras) {
+    double total = 0;
+    for (var compra in compras) {
+      // Extrae el número de la cadena "Bs 15"
+      String valorStr = (compra['total'] as String).replaceAll('Bs ', '');
+      total += double.tryParse(valorStr) ?? 0;
+    }
+    return 'Bs $total';
   }
 }

@@ -1,72 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../paleta.dart';
 import '../widgets/animacion_card.dart';
 import '../widgets/card_item.dart';
+import 'cambiar_tema_pantalla.dart';
 
 class Otrospantalla extends StatelessWidget {
   const Otrospantalla({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Lista de opciones para la pestaña "Otros"
+    final tema = Provider.of<AppTheme>(context); // 🔹 Instancia de AppTheme
+
     final List<Map<String, dynamic>> opciones = [
       {
         "icon": Icons.color_lens,
         "titulo": "Cambiar color",
         "subtitulo": "Personaliza el tema de la app",
         "accion": () {
-          // Acción futura para cambiar color
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const CambiarTemaPantalla(),
+            ),
+          );
         },
       },
       {
         "icon": Icons.language,
         "titulo": "Cambiar idioma",
         "subtitulo": "Selecciona tu idioma preferido",
-        "accion": () {
-          // Acción futura para cambiar idioma
-        },
+        "accion": () {},
       },
       {
         "icon": Icons.notifications,
         "titulo": "Notificaciones",
         "subtitulo": "Activa o desactiva alertas",
-        "accion": () {
-          // Acción futura para notificaciones
-        },
+        "accion": () {},
       },
       {
         "icon": Icons.lock,
         "titulo": "Privacidad",
         "subtitulo": "Configura tu información personal",
-        "accion": () {
-          // Acción futura para privacidad
-        },
+        "accion": () {},
       },
       {
         "icon": Icons.help_outline,
         "titulo": "Ayuda / Soporte",
         "subtitulo": "Contacta soporte o consulta FAQ",
-        "accion": () {
-          // Acción futura para soporte
-        },
+        "accion": () {},
       },
       {
         "icon": Icons.info_outline,
         "titulo": "Acerca de la app",
         "subtitulo": "Versión, créditos y más información",
-        "accion": () {
-          // Acción futura para info
-        },
+        "accion": () {},
       },
     ];
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: tema.backgroundColor, // 🔹 Color de fondo dinámico
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 🟦 Header con degradado
+            // Header con degradado
             Container(
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(24, 60, 24, 24),
@@ -75,8 +73,8 @@ class Otrospantalla extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    AppTheme.primaryColor.withOpacity(0.9),
-                    AppTheme.primaryColor,
+                    tema.primaryColor.withOpacity(0.9), // 🔹 color dinámico
+                    tema.primaryColor,
                   ],
                 ),
                 borderRadius: const BorderRadius.only(
@@ -89,10 +87,7 @@ class Otrospantalla extends StatelessWidget {
                 children: [
                   Text(
                     'Otros',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineMedium
-                        ?.copyWith(
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
                         ),

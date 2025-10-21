@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../paleta.dart';
-import 'resena_pantalla.dart'; // 👈 nueva pantalla de reseña
+import 'resena_pantalla.dart';
 
 class TrackingPedidoPantalla extends StatefulWidget {
   final double totalPedido;
@@ -34,9 +34,12 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
     "foto": "https://cdn-icons-png.flaticon.com/512/147/147144.png"
   };
 
+  late AppTheme appTheme; // ⚠️ Instancia de AppTheme
+
   @override
   void initState() {
     super.initState();
+    appTheme = AppTheme(); // Inicializamos la instancia
     // Simula búsqueda de delivery
     Timer(const Duration(seconds: 3), () {
       setState(() => buscandoRepartidor = false);
@@ -61,16 +64,16 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Seguimiento del pedido'),
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: appTheme.primaryColor,
       ),
       body: buscandoRepartidor
-          ? const Center(
+          ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(color: AppTheme.primaryColor),
-                  SizedBox(height: 16),
-                  Text('Buscando repartidor...'),
+                  CircularProgressIndicator(color: appTheme.primaryColor),
+                  const SizedBox(height: 16),
+                  const Text('Buscando repartidor...'),
                 ],
               ),
             )
@@ -91,7 +94,11 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
             child: const Center(
               child: Text(
                 '🗺️ Mapa (simulado)',
-                style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic, color: Colors.black54),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.black54
+                ),
               ),
             ),
           ),
@@ -159,7 +166,11 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
               const SizedBox(height: 16),
               Text(
                 '⏳ Tiempo estimado de llegada: ${(etapas.length - etapa) * 5} min',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.primaryColor),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: appTheme.primaryColor
+                ),
               ),
             ],
           ),
@@ -179,9 +190,11 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
           children: [
             const Icon(Icons.check_circle, color: Colors.green, size: 80),
             const SizedBox(height: 16),
-            const Text('¡Su pedido llegó!',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green),
-                textAlign: TextAlign.center),
+            const Text(
+              '¡Su pedido llegó!',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green),
+              textAlign: TextAlign.center
+            ),
             const SizedBox(height: 24),
             CircleAvatar(
               backgroundImage: NetworkImage(repartidor['foto']!),
@@ -207,7 +220,7 @@ class _TrackingPedidoPantallaState extends State<TrackingPedidoPantalla> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primaryColor,
+                backgroundColor: appTheme.primaryColor,
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),

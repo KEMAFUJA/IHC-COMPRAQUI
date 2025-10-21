@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../paleta.dart';
+import 'package:provider/provider.dart';
 
 class BotonPrimario extends StatelessWidget {
   final String label;
@@ -19,14 +20,16 @@ class BotonPrimario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<AppTheme>(context); // <--- obtenemos instancia
+
     return SizedBox(
       width: width ?? double.infinity,
       child: outlined
           ? OutlinedButton(
               onPressed: onPressed,
               style: OutlinedButton.styleFrom(
-                foregroundColor: color ?? AppTheme.primaryColor,
-                side: BorderSide(color: color ?? AppTheme.primaryColor),
+                foregroundColor: color ?? theme.primaryColor,
+                side: BorderSide(color: color ?? theme.primaryColor),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
                 padding: const EdgeInsets.symmetric(vertical: 16),
@@ -38,7 +41,7 @@ class BotonPrimario extends StatelessWidget {
           : ElevatedButton(
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(
-                backgroundColor: color ?? AppTheme.primaryColor,
+                backgroundColor: color ?? theme.primaryColor,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
                 padding: const EdgeInsets.symmetric(vertical: 16),

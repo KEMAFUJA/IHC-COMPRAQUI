@@ -1,118 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../paleta.dart';
+import '../providers/carrito.dart';
 import 'ubicacion_envio_pantalla.dart';
 
-class CarritoPantalla extends StatefulWidget {
-  final List<Map<String, dynamic>> carrito;
-  const CarritoPantalla({super.key, required this.carrito});
-
-  @override
-  State<CarritoPantalla> createState() => _CarritoPantallaState();
-}
-
-class _CarritoPantallaState extends State<CarritoPantalla> {
-  late Map<String, Map<String, dynamic>> productosUnicos;
-  late Map<String, int> cantidades;
-
-  @override
-  void initState() {
-    super.initState();
-    _recalcularCarrito();
-  }
-
-  void _recalcularCarrito() {
-    productosUnicos = {};
-    cantidades = {};
-    for (var p in widget.carrito) {
-      final key = p['nombre'];
-      if (productosUnicos.containsKey(key)) {
-        cantidades[key] = cantidades[key]! + 1;
-      } else {
-        productosUnicos[key] = p;
-        cantidades[key] = 1;
-      }
-    }
-  }
-
-  void _agregarProducto(String nombre, [Map<String, dynamic>? producto]) {
-    setState(() {
-      if (!productosUnicos.containsKey(nombre) && producto != null) {
-        productosUnicos[nombre] = producto;
-        cantidades[nombre] = 1;
-      } else {
-        cantidades[nombre] = cantidades[nombre]! + 1;
-      }
-    });
-  }
-
-  void _quitarProducto(String nombre) {
-    setState(() {
-      if (cantidades[nombre]! > 1) {
-        cantidades[nombre] = cantidades[nombre]! - 1;
-      } else {
-        productosUnicos.remove(nombre);
-        cantidades.remove(nombre);
-      }
-    });
-  }
-
-  double _calcularTotal() {
-    double total = 0;
-    productosUnicos.forEach((nombre, producto) {
-      final cantidad = cantidades[nombre] ?? 1;
-      final precioString =
-          producto['precio'].toString().replaceAll(RegExp(r'[^\d.]'), '');
-      final precio = double.tryParse(precioString) ?? 0;
-      total += precio * cantidad;
-    });
-    return total;
-  }
+class CarritoPantalla extends StatelessWidget {
+  const CarritoPantalla({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final listaProductos = productosUnicos.values.toList();
-    final total = _calcularTotal();
+    // 🔹 Obtiene el tema dinámico desde el provider
+    final themeProvider = Provider.of<AppTheme>(context);
 
+    // 🔹 Obtiene el carrito desde el provider
+    final carrito = Provider.of<Carrito>(context);
+
+    // 🔹 Lista de productos y total calculado automáticamente
+    final listaProductos = carrito.productos;
+    final total = carrito.calcularTotal();
+
+    // 🔹 Sugerencias de productos para mostrar al final
     final sugerencias = [
       {
         'nombre': 'Pan integral 500g',
         'precio': 'Bs 6',
-        'imagen': 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200'
+        'imagen':
+            'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200'
       },
       {
         'nombre': 'Leche descremada 1L',
         'precio': 'Bs 8',
-        'imagen': 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=200'
+        'imagen':
+            'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=200'
       },
       {
         'nombre': 'Huevos 6u',
         'precio': 'Bs 12',
-        'imagen': 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200'
+        'imagen':
+            'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200'
       },
       {
         'nombre': 'Aceite de oliva 500ml',
         'precio': 'Bs 20',
-        'imagen': 'https://images.unsplash.com/photo-1573383678063-32d3aad7e8c8?w=200'
+        'imagen':
+            'https://images.unsplash.com/photo-1573383678063-32d3aad7e8c8?w=200'
       },
     ];
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Carrito', style: TextStyle(color: Colors.white)),
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: themeProvider.primaryColor,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: listaProductos.isEmpty
-          ? const Center(child: Text('Tu carrito está vacío'))
+          // 🔹 Mostrar mensaje si el carrito está vacío
+          ? Center(
+              child: Text(
+                'Tu carrito está vacío',
+                style: TextStyle(color: themeProvider.primaryColor),
+              ),
+            )
           : ListView.builder(
               padding: const EdgeInsets.only(bottom: 260),
               itemCount: listaProductos.length,
               itemBuilder: (context, index) {
                 final producto = listaProductos[index];
-                final cantidad = cantidades[producto['nombre']]!;
+                final cantidad = carrito.cantidad(producto['nombre']);
 
                 return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -142,23 +100,31 @@ class _CarritoPantallaState extends State<CarritoPantalla> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(producto['nombre'],
-                                style: const TextStyle(fontWeight: FontWeight.w600)),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: themeProvider.primaryColor)),
                             Text(producto['precio'],
-                                style: const TextStyle(color: AppTheme.primaryColor)),
+                                style:
+                                    TextStyle(color: themeProvider.primaryColor)),
                           ],
                         ),
                       ),
                       Row(
                         children: [
+                          // 🔹 Quitar producto del carrito
                           IconButton(
                             icon: const Icon(Icons.remove, size: 20),
-                            onPressed: () => _quitarProducto(producto['nombre']),
+                            onPressed: () =>
+                                carrito.quitarProducto(producto['nombre']),
                           ),
                           Text('$cantidad',
-                              style: const TextStyle(fontWeight: FontWeight.w600)),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: themeProvider.primaryColor)),
+                          // 🔹 Agregar producto al carrito
                           IconButton(
                             icon: const Icon(Icons.add, size: 20),
-                            onPressed: () => _agregarProducto(producto['nombre']),
+                            onPressed: () => carrito.agregarProducto(producto),
                           ),
                         ],
                       ),
@@ -173,7 +139,7 @@ class _CarritoPantallaState extends State<CarritoPantalla> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Sugerencias
+            // 🔹 Lista horizontal de sugerencias
             SizedBox(
               height: 160,
               child: ListView.separated(
@@ -216,18 +182,20 @@ class _CarritoPantallaState extends State<CarritoPantalla> {
                             children: [
                               Text(
                                 sugerencia['nombre']!,
-                                style: const TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.w600),
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600,
+                                    color: themeProvider.primaryColor),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(height: 2),
                               Text(
                                 sugerencia['precio']!,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
-                                    color: AppTheme.primaryColor),
+                                    color: themeProvider.primaryColor),
                               ),
                               const SizedBox(height: 4),
                               SizedBox(
@@ -235,18 +203,15 @@ class _CarritoPantallaState extends State<CarritoPantalla> {
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     padding: EdgeInsets.zero,
-                                    backgroundColor: AppTheme.primaryColor,
+                                    backgroundColor: themeProvider.primaryColor,
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(6)),
                                   ),
-                                  onPressed: () => _agregarProducto(
-                                    sugerencia['nombre']!,
-                                    {
-                                      'nombre': sugerencia['nombre']!,
-                                      'precio': sugerencia['precio']!,
-                                      'imagen': sugerencia['imagen']!,
-                                    },
-                                  ),
+                                  onPressed: () => carrito.agregarProducto({
+                                    'nombre': sugerencia['nombre']!,
+                                    'precio': sugerencia['precio']!,
+                                    'imagen': sugerencia['imagen']!,
+                                  }),
                                   child: const Icon(Icons.add,
                                       size: 16, color: Colors.white),
                                 ),
@@ -261,23 +226,27 @@ class _CarritoPantallaState extends State<CarritoPantalla> {
               ),
             ),
             const SizedBox(height: 12),
-            // Total
+            // 🔹 Total
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Total:',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                Text('Bs ${total.toStringAsFixed(2)}',
-                    style: const TextStyle(
+                Text('Total:',
+                    style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.primaryColor)),
+                        color: themeProvider.primaryColor)),
+                Text('Bs ${total.toStringAsFixed(2)}',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.primaryColor)),
               ],
             ),
             const SizedBox(height: 12),
+            // 🔹 Botón PEDIR
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primaryColor,
+                backgroundColor: themeProvider.primaryColor,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),

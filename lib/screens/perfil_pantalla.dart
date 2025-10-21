@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/boton_primario.dart';
 import '../paleta.dart';
 import 'editar_perfil_pantalla.dart';
+import '../providers/usuario.dart';
 
 class Perfilpantalla extends StatelessWidget {
   const Perfilpantalla({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = AppTheme();
+
+    // 📦 Escucha los cambios del usuario desde Usuario
+    final user = context.watch<Usuario>();
+
     return Scaffold(
       backgroundColor: Colors.grey[50],
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header con fondo decorativo
+            // ------------------------
+            // Header con fondo y avatar
+            // ------------------------
             Container(
               height: 200,
               decoration: BoxDecoration(
@@ -21,8 +30,8 @@ class Perfilpantalla extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    AppTheme.primaryColor.withOpacity(0.8),
-                    AppTheme.primaryColor,
+                    appTheme.primaryColor.withOpacity(0.8),
+                    appTheme.primaryColor,
                   ],
                 ),
                 borderRadius: const BorderRadius.only(
@@ -55,16 +64,18 @@ class Perfilpantalla extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
+                    // 🔔 Nombre dinámico
                     Text(
-                      'Juan Pérez',
+                      user.nombre,
                       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
                           ),
                     ),
                     const SizedBox(height: 4),
+                    // 🔔 Correo dinámico
                     Text(
-                      'juan.perez@email.com',
+                      user.correo,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Colors.white.withOpacity(0.9),
                           ),
@@ -76,7 +87,9 @@ class Perfilpantalla extends StatelessWidget {
 
             const SizedBox(height: 24),
 
+            // ------------------------
             // Tarjeta de información personal
+            // ------------------------
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Card(
@@ -91,21 +104,21 @@ class Perfilpantalla extends StatelessWidget {
                       _infoRow(
                         Icons.phone_outlined,
                         'Teléfono',
-                        '+591 71234567',
+                        user.telefono, // 🔔 Dinámico
                         Colors.blue[600]!,
                       ),
                       const Divider(height: 30),
                       _infoRow(
                         Icons.location_on_outlined,
                         'Dirección',
-                        'Av. Central #123, La Paz',
+                        user.direccion, // 🔔 Dinámico
                         Colors.green[600]!,
                       ),
                       const Divider(height: 30),
                       _infoRow(
                         Icons.card_giftcard_outlined,
                         'Puntos de fidelidad',
-                        '245 puntos',
+                        '${user.puntosFidelidad} puntos', // 🔔 Dinámico
                         Colors.orange[600]!,
                       ),
                     ],
@@ -116,7 +129,9 @@ class Perfilpantalla extends StatelessWidget {
 
             const SizedBox(height: 32),
 
+            // ------------------------
             // Botones de acción
+            // ------------------------
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Column(
@@ -133,14 +148,12 @@ class Perfilpantalla extends StatelessWidget {
                       );
                     },
                   ),
-
                   const SizedBox(height: 16),
-
                   // Botón Cerrar Sesión
                   BotonPrimario(
                     label: 'Cerrar Sesión',
                     onPressed: () {
-                      // Acción de logout
+                      // Aquí podrías limpiar el provider o hacer logout
                     },
                     color: Colors.red[600],
                     outlined: true,
@@ -155,6 +168,9 @@ class Perfilpantalla extends StatelessWidget {
     );
   }
 
+  // =====================
+  // Widget para cada fila de información
+  // =====================
   Widget _infoRow(IconData icon, String title, String value, Color iconColor) {
     return Row(
       children: [
